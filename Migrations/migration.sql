@@ -15,7 +15,7 @@ CREATE OR REPLACE TABLE authors (
 
 ) ENGINE=InnoDB;
 
-CREATE OR REPLACE TABLE livros (
+CREATE OR REPLACE TABLE books (
     `ISBN` char(13) PRIMARY KEY,
     `name` varchar(100) NOT NULL,
     `email` varchar(100) UNIQUE NOT NULL,
