@@ -1,12 +1,14 @@
 <?php
 namespace Router;
 require_once 'Controllers/UserController.php';
+require_once 'Controllers/AuthorController.php';
 require_once 'Request.php';
 require_once 'Middlewares/IsPalmeira.php';
 require_once 'Handler.php';
 require_once "Middlewares/CORS.php";
 
 use Controllers\UserController;
+use Controllers\AuthorController;
 
 class Route{
     private static $get_routes = [];
@@ -22,10 +24,12 @@ class Route{
     }
 
     static public function handle(){
+        // var_dump($_SERVER);
         $url = $_SERVER["REQUEST_URI"];
         $path = parse_url($url, PHP_URL_PATH);
         switch($_SERVER["REQUEST_METHOD"]){
             case "GET":
+                // var_dump($_GET);
                 if(!isset(self::$get_routes[$path])){
                     http_response_code(404);
                     echo 'NOT FOUND';

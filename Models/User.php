@@ -3,9 +3,9 @@ namespace Models;
 require_once "DB.php";
 
 class User{
-    public int $id;
-    public string $name;
-    public string $email;
+    public $id;
+    public $name;
+    public $email;
     //private string $password;
     
     public function __construct(){
