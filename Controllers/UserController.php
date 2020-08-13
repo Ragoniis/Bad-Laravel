@@ -35,10 +35,11 @@ class UserController{
         response($deleted,200,$headers)->send();
     }
     
+    /*
     static public function create(Request $request){
         $user = User::create($request);
         $headers = ["Accept" => "application/json"];
         response($user,201,$headers)->send();
-        
     }
+    */
 } 

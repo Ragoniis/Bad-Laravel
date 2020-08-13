@@ -13,3 +13,7 @@ Route::get("/showauthor","Controllers\AuthorController@show");
 Route::post("/createauthor","Controllers\AuthorController@create");
 Route::post("/updateauthor","Controllers\AuthorController@update");
 Route::post("/deleteauthor","Controllers\AuthorController@delete");
+
+Route::post("/login","Controllers\API\PassportController@loginUser");
+Route::post("/register","Controllers\API\PassportController@registerUser");
+Route::get("/logout","Controllers\API\PassportController@logout");

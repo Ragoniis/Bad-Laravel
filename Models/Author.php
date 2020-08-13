@@ -68,7 +68,6 @@ class Author{
         $pdo = \DB::connect();
         $stm = $pdo->prepare("Delete from authors where aid=?");
         $stm->execute([$request->aid]);
-        //$stm->closeCursor();
         return $stm->rowCount();
     }
 

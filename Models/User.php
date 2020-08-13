@@ -6,7 +6,7 @@ class User{
     public $id;
     public $name;
     public $email;
-    //private string $password;
+    private $password;
     
     public function __construct(){
         unset($this->password);  
@@ -63,6 +63,14 @@ class User{
         $pdo = \DB::connect();
         $stm = $pdo->prepare("INSERT INTO user (`name`,`email`,`password`) VALUES (?,?,?)");
         $stm->execute([$request->name,$request->email,$request->password]);
+        $stm->closeCursor();
+        return self::find($pdo->lastInsertId());
+    }
+
+    static public function storeToken($id, $jwt) {
+        $pdo = \DB::connect();
+        $stm = $pdo->prepare("INSERT INTO oauth_access_tokens (`jwt`,`user_id`) VALUES (?,?)");
+        $stm->execute([$jwt,$id]);
         $stm->closeCursor();
         return self::find($pdo->lastInsertId());
     }

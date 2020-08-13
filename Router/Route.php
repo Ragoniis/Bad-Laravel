@@ -2,6 +2,8 @@
 namespace Router;
 require_once 'Controllers/UserController.php';
 require_once 'Controllers/AuthorController.php';
+require_once 'Controllers/API\PassportController.php';
+
 require_once 'Request.php';
 require_once 'Middlewares/IsPalmeira.php';
 require_once 'Handler.php';
@@ -9,6 +11,7 @@ require_once "Middlewares/CORS.php";
 
 use Controllers\UserController;
 use Controllers\AuthorController;
+use Controllers\API\PassportController;
 
 class Route{
     private static $get_routes = [];
@@ -46,6 +49,7 @@ class Route{
                     echo 'NOT FOUND';
                     die();    
                 }
+                // var_dump($_POST);
                 $function = explode("@",self::$post_routes[$path]);
                 $request = new \Request($_POST);
                 $handler = new \Handler(self::$middlewares,$function);
