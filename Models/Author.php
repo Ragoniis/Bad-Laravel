@@ -17,21 +17,31 @@ class Author{
 
     static public function all():array{
         $pdo = \DB::connect();
-        $stm = $pdo->prepare("Select * from authors");
+        $stm = $pdo->prepare("Select a.*, b.title, b.pages, b.ISBN FROM authors as A LEFT JOIN books as B on a.aid = b.aid");
         $stm->execute();
-        $authors = $stm->fetchAll(\PDO::FETCH_ASSOC);
-        // var_dump($authors);
-        return $authors;
+        $authorsWithBooks = $stm->fetchAll(\PDO::FETCH_ASSOC);
+        return $authorsWithBooks;
     }
 
-    static public function find($aid):Author{
+    static public function find($aid) {
         $pdo = \DB::connect();
-        $stm = $pdo->prepare("Select * from authors where aid=?");
+
+        $stmt = $pdo->prepare("Select count(a.aid) as total_books FROM authors as A LEFT JOIN books as B on a.aid = b.aid where a.aid=?");
+        $stmt->execute([$aid]);
+        $totalBooksOfAuthor = $stmt->fetch();
+
+        $stm = $pdo->prepare("Select a.*, b.title, b.pages, b.ISBN FROM authors as A LEFT JOIN books as B on a.aid = b.aid where a.aid=?");
         $stm->setFetchMode(\PDO::FETCH_CLASS, 'Models\Author');
         $stm->execute([$aid]);
-        $author = $stm->fetch();
+
+        if( (int) $totalBooksOfAuthor['total_books'] !== 1) {
+            $authorWithBooks = $stm->fetchAll(\PDO::FETCH_ASSOC);
+            return $authorWithBooks;
+        }
+
+        $authorWithBook = $stm->fetch();
         $stm->closeCursor();
-        return $author;
+        return $authorWithBook;
     }
 
     static public function update(\Request $request):Author{
