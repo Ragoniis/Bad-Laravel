@@ -13,7 +13,6 @@ use JsonResponse;
 class PassportController {
 
   static public function registerUser(Request $request) {
-
     $headers = ["Accept" => "application/json"];
     $errors = PassportController::validate($request);
 
@@ -25,9 +24,26 @@ class PassportController {
       $user->token = PassportController::createToken($user);
 
       response($user, 200, $headers)->send();
-    } 
-    response($errors, 206, $headers)->send();
+    } else {
+      response($errors, 206, $headers)->send();
+    }
+  }
 
+  static public function loginUser(Request $request) {
+    $headers = ["Accept" => "application/json"];
+    $user = User::where($request->email);
+
+    if($user) {
+      if (password_verify($request->password, $user['password'])) {
+        $user = PassportController::prepareJSONParameter($user);
+        $user->token = PassportController::createToken($user);
+        response($user, 200, $headers)->send();
+      } else {
+        response('Incorrect password', 401, $headers)->send();
+      }
+    } else {
+      response('Email not registered', 401, $headers)->send();
+    }
   }
 
   static public function validate(Request $request) {
@@ -66,6 +82,17 @@ class PassportController {
     User::storeToken($user->id, $jwt);
 
     return $jwt;
+  }
+
+  static public function prepareJSONParameter($user) {
+    // remove to return a JSON without password
+    unset($user['password']);
+    unset($user['0'], $user['1'], $user['2'], $user['3']);
+
+    // function createToken requires a JSON as parameter
+    $user = new Request($user);
+
+    return user;
   }
 
 }
