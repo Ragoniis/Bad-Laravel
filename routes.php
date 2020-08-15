@@ -17,3 +17,4 @@ Route::post("/deleteauthor","Controllers\AuthorController@delete");
 Route::post("/login","Controllers\API\PassportController@loginUser");
 Route::post("/register","Controllers\API\PassportController@registerUser");
 Route::get("/logout","Controllers\API\PassportController@logout");
+Route::post("/getDetails","Controllers\API\PassportController@getDetails");

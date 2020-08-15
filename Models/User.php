@@ -67,14 +67,6 @@ class User{
         return self::find($pdo->lastInsertId());
     }
 
-    static public function storeToken($id, $jwt) {
-        $pdo = \DB::connect();
-        $stm = $pdo->prepare("INSERT INTO oauth_access_tokens (`jwt`,`user_id`) VALUES (?,?)");
-        $stm->execute([$jwt,$id]);
-        $stm->closeCursor();
-        return self::find($id);
-    }
-
     static public function where($value) {
         $pdo = \DB::connect();
         $stm = $pdo->prepare('Select * from user where email = :value');
