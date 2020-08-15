@@ -48,9 +48,9 @@ class Route{
                     echo 'NOT FOUND';
                     die();    
                 }
-                if(isset($_POST['token'])) {
-                    array_push(self::$middlewares, 'Authenticate');
-                }
+                // if(isset($_POST['token'])) {
+                //     array_push(self::$middlewares, 'Authenticate');
+                // }
                 $function = explode("@",self::$post_routes[$path]);
                 $request = new \Request($_POST);
                 $handler = new \Handler(self::$middlewares,$function);

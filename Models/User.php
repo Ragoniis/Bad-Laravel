@@ -67,7 +67,7 @@ class User{
         return self::find($pdo->lastInsertId());
     }
 
-    static public function where($value) {
+    static public function whereEmail($value) {
         $pdo = \DB::connect();
         $stm = $pdo->prepare('Select * from user where email = :value');
         $stm->execute(array(

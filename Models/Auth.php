@@ -13,7 +13,7 @@ use Request;
 class Auth { 
 
   static public function attempt($email, $password) {
-    $user = User::where($email);
+    $user = User::whereEmail($email);
 
     if($user) {
       if (password_verify($password, $user['password'])) {
