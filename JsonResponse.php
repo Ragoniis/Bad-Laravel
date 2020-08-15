@@ -25,8 +25,7 @@ class JsonResponse {
 
 }
 
-function response($data,$status_code=200,$headers=[]): JsonResponse{
-    // var_dump($data);
+function response($data,$status_code=200,$headers=[]): JsonResponse {
     $response = new JsonResponse($data,$status_code,$headers);
     return $response;
 }

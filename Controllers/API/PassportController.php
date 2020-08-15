@@ -83,5 +83,4 @@ class PassportController {
 
     return $errors;
   }
-
 }

@@ -12,17 +12,6 @@ use Request;
 
 class Auth { 
 
-  static public function storeToken($id, $jwt) {
-    $pdo = \DB::connect();
-    $stm = $pdo->prepare("INSERT INTO oauth_access_tokens (`jwt`,`user_id`, `revoked`) VALUES (?,?,?)");
-    $stm->execute([$jwt,$id, false]);
-    $stm->closeCursor();
-
-    $_SESSION['token'] = $jwt;
-
-    return User::find($id);
-  }
-
   static public function attempt($email, $password) {
     $user = User::where($email);
 
@@ -59,6 +48,17 @@ class Auth {
     return $jwt;
   }
 
+  static public function storeToken($id, $jwt) {
+    $pdo = \DB::connect();
+    $stm = $pdo->prepare("INSERT INTO oauth_access_tokens (`jwt`,`user_id`, `revoked`) VALUES (?,?,?)");
+    $stm->execute([$jwt,$id, false]);
+    $stm->closeCursor();
+
+    $_SESSION['token'] = $jwt;
+
+    return User::find($id);
+  }
+
   static public function userToken() {
     $token = self::verifySession();
     session_destroy();
@@ -92,5 +92,4 @@ class Auth {
 
     return $user;
   }
-  
 }

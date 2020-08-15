@@ -1,6 +1,7 @@
 <?php
 require_once "Request.php";
 require_once "Middlewares/Middleware.php";
+
 class Handler{
     public $middlewares = [];
     protected $position = 0;
