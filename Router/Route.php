@@ -1,17 +1,23 @@
 <?php
 namespace Router;
 require_once 'Controllers/UserController.php';
+require_once 'Controllers/AuthorController.php';
+require_once 'Controllers/API\PassportController.php';
+
 require_once 'Request.php';
 require_once 'Middlewares/IsPalmeira.php';
+require_once 'Middlewares/Authenticate.php';
 require_once 'Handler.php';
 require_once "Middlewares/CORS.php";
 
 use Controllers\UserController;
+use Controllers\AuthorController;
+use Controllers\API\PassportController;
 
 class Route{
     private static $get_routes = [];
     private static $post_routes = [];
-    private static $middlewares = ["CORS"];//,"IsPalmeira"];
+    private static $middlewares = ["CORS"];
 
     static public function get(string $url,string $controllerMethod){
         self::$get_routes[$url] = $controllerMethod;
@@ -42,6 +48,9 @@ class Route{
                     echo 'NOT FOUND';
                     die();    
                 }
+                // if(isset($_POST['token'])) {
+                //     array_push(self::$middlewares, 'Authenticate');
+                // }
                 $function = explode("@",self::$post_routes[$path]);
                 $request = new \Request($_POST);
                 $handler = new \Handler(self::$middlewares,$function);

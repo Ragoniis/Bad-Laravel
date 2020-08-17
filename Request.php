@@ -6,5 +6,6 @@ class Request{
         foreach($arr as $k =>$v){
             $this->$k = $v;
         }
+
     }
 }

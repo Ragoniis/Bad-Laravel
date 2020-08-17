@@ -3,10 +3,10 @@ namespace Models;
 require_once "DB.php";
 
 class User{
-    public int $id;
-    public string $name;
-    public string $email;
-    //private string $password;
+    public $id;
+    public $name;
+    public $email;
+    private $password;
     
     public function __construct(){
         unset($this->password);  
@@ -22,7 +22,7 @@ class User{
 
     static public function find($id):User{
         $pdo = \DB::connect();
-        $stm = $pdo->prepare("Select * from user where id=?");
+        $stm = $pdo->prepare("Select `id`,`name`,`email` from user where id=?");
         $stm->setFetchMode(\PDO::FETCH_CLASS, 'Models\User');
         $stm->execute([$id]);
         $user = $stm->fetch();
@@ -65,6 +65,17 @@ class User{
         $stm->execute([$request->name,$request->email,$request->password]);
         $stm->closeCursor();
         return self::find($pdo->lastInsertId());
+    }
+
+    static public function whereEmail($value) {
+        $pdo = \DB::connect();
+        $stm = $pdo->prepare('Select * from user where email = :value');
+        $stm->execute(array(
+            ':value' => $value
+        ));
+        $user = $stm->fetch();
+        $stm->closeCursor();
+        return $user;
     }
 
 }
