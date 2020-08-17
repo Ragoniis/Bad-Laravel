@@ -3,8 +3,10 @@ namespace Controllers;
 require_once "DB.php";
 require_once "Request.php";
 require_once "Models/User.php";
+require_once "Models/Author.php";
 require_once "JsonResponse.php";
 use Models\User;
+use Models\Author;
 use Request;
 use JsonResponse;
 

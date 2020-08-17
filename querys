@@ -1,0 +1,2 @@
+get all authors with join on books
+SELECT authors.aid, authors.surname, livros.ISBN, livros.name, livros.aid FROM authors LEFT JOIN livros ON authors.aid = livros.aid ORDER BY authors.aid

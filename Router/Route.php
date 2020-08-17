@@ -1,24 +1,27 @@
 <?php
 namespace Router;
 require_once 'Controllers/UserController.php';
+require_once 'Controllers/AuthorController.php';
 require_once 'Request.php';
 require_once 'Middlewares/IsPalmeira.php';
+require_once 'Middlewares/PassaTudo.php';
 require_once 'Handler.php';
 require_once "Middlewares/CORS.php";
 
 use Controllers\UserController;
+use Controllers\AuthorController;
 
 class Route{
     private static $get_routes = [];
     private static $post_routes = [];
-    private static $middlewares = ["CORS"];//,"IsPalmeira"];
+    private static $middlewares = ["CORS"];//, "PassaTudo", "IsPalmeira"];
 
-    static public function get(string $url,string $controllerMethod){
-        self::$get_routes[$url] = $controllerMethod;
+    static public function get(string $url,string $controllerMethod, array $mwares){
+        self::$get_routes[$url] = ["controllerMethod" => $controllerMethod, "middlewares" => $mwares];
     }
     
-    static public function post(string $url,string $controllerMethod){
-        self::$post_routes[$url] = $controllerMethod;
+    static public function post(string $url,string $controllerMethod, array $mwares){
+        self::$post_routes[$url] = ["controllerMethod" => $controllerMethod, "middlewares" => $mwares];
     }
 
     static public function handle(){
@@ -26,14 +29,19 @@ class Route{
         $path = parse_url($url, PHP_URL_PATH);
         switch($_SERVER["REQUEST_METHOD"]){
             case "GET":
-                if(!isset(self::$get_routes[$path])){
+                if(!isset(self::$get_routes[$path]["controllerMethod"])){
                     http_response_code(404);
                     echo 'NOT FOUND';
                     die();    
                 }
-                $function = explode("@",self::$get_routes[$path]);
+                $function = explode("@",self::$get_routes[$path]["controllerMethod"]);
                 $request = new \Request($_GET);
-                $handler = new \Handler(self::$middlewares,$function);
+                $routeMiddleware = self::$get_routes[$path]["middlewares"];
+                foreach (self::$middlewares as $middleware) {
+                    array_push($routeMiddleware, $middleware);
+                }
+                
+                $handler = new \Handler($routeMiddleware,$function);
                 $handler($request);
                 break;
             case "POST":
