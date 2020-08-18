@@ -1,9 +1,9 @@
 <?php
 
 class JsonResponse {
-    private string $data;
-    private array $headers;
-    private int $status_code;
+    private  $data;
+    private  $headers;
+    private  $status_code;
 
     public function __construct($data,$status_code,$headers){
         $this->data = json_encode($data);

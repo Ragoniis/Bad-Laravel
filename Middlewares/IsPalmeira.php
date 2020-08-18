@@ -4,7 +4,7 @@ require_once "Middlewares/Middleware.php";
 
 class IsPalmeira implements Middleware{
 
-    public function handle(\Request $request,\Handler $next){
+    static public function handle(\Request $request,\Handler $next){
         if($request->name === "palmeira"){
             $next($request);
         }else {
