@@ -4,7 +4,7 @@ require_once "Middlewares/Middleware.php";
 
 class CORS implements Middleware{
 
-    public function handle(\Request $request,\Handler $next){
+    static public function handle(\Request $request,\Handler $next){
 
         $next($request);
         header('Access-Control-Allow-Origin: *');

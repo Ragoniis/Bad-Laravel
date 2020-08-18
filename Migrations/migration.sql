@@ -18,8 +18,6 @@ CREATE OR REPLACE TABLE authors (
 CREATE OR REPLACE TABLE livros (
     `ISBN` char(13) PRIMARY KEY,
     `name` varchar(100) NOT NULL,
-    `email` varchar(100) UNIQUE NOT NULL,
-    `password` varchar(100) NOT NULL,
-    `aid` INT UNSIGNED, 
+    `aid` INT UNSIGNED,
     CONSTRAINT `aid` FOREIGN KEY (aid) REFERENCES authors (aid) ON DELETE CASCADE
 ) ENGINE=InnoDB;

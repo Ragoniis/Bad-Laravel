@@ -13,7 +13,7 @@ class Handler{
     }
 
     public function __invoke(Request $request){
-        $function = $this->middlewares[$this->position]; 
+        $function = $this->middlewares[$this->position];
         if(isset($function)){
             $this->position++;
             call_user_func(["Middleware\\".$function,"handle"],$request,$this);
